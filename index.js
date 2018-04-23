@@ -68,9 +68,6 @@ app.get('/getdata', function (req, res) {
 });
 
 app.post('/signin', function (req, res) {
-    var currDate = new Date();
-    var datestring = (currDate.getMonth()+1)+"/"+currDate.getDate()+"/"+currDate.getFullYear();
-    var registered;
     Practice.findOneAndUpdate({'date': req.body.date},
         {$push: {'registered': req.body.name}},
         {upsert: true, new: true},
@@ -79,6 +76,24 @@ app.post('/signin', function (req, res) {
                 console.log(err);
             }
             res.json({registered: practice["registered"]});
+        });
+});
+app.post('/signout', function (req, res) {
+    var registered;
+    Practice.findOne({'date': req.body.date},
+        function (err, practice) {
+            if (err) {
+                console.log(err);
+            }
+            registered = practice.registered;
+        });
+    Practice.findOneAndUpdate({'date': req.body.date},
+        {$set: {'registered': registered.filter(e => e != req.body.name)}},
+        {upsert: true, new: true},
+        function (err, practice) {
+            if (err) {
+                console.log(err);
+            }
         });
 });
 
@@ -95,6 +110,6 @@ io.sockets.on('connection', function (socket) {
     });
 
     socket.on('disconnect', () => {
-        console.log('a client disconnected.')
+        console.log('a client disconnected.');
     });
 });
