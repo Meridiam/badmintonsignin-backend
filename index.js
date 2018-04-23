@@ -62,12 +62,12 @@ app.get('/getdata', function (req, res) {
         });
 });
 
-app.get('/signin', function (req, res) {
+app.post('/signin', function (req, res) {
     var currDate = new Date();
     var datestring = (currDate.getMonth()+1)+"/"+currDate.getDate()+"/"+currDate.getFullYear();
     var registered;
-    Practice.findOneAndUpdate({ 'date': (currDate.getMonth()+1)+"/"+currDate.getDate()+"/"+currDate.getFullYear()},
-        {$push: {'registered': "Akshit Garg"}},
+    Practice.findOneAndUpdate({ 'date': req.body.date},
+        {$push: {'registered': req.body.name}},
         {upsert: true, new: true},
         function (err, practice) {
             if (err) {
