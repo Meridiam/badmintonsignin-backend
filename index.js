@@ -1,6 +1,7 @@
 const express = require('express');
 const request = require('request');
 const redis = require('redis');
+const bodyParser = require('body-parser');
 
 var db = process.env.REDIS_URL || "//127.0.0.1:6379";
 const client = redis.createClient(db);
@@ -21,7 +22,9 @@ var allowCrossDomain = function(req, res, next) {
       next();
     }
 };
+
 app.use(allowCrossDomain);
+app.use(bodyParser.json());
 
 app.get('/updateroster', function (req, res) {
     var names = [];
@@ -40,8 +43,14 @@ app.get('/updateroster', function (req, res) {
 
 app.get('/getroster', function (req, res) {
     client.get("roster", function(err, reply) {
-        res.send(JSON.stringify({data: reply}));
+        res.send(JSON.stringify({roster: reply}));
     });
+});
+
+app.post('/signin', function (req, res) {
+    var currDate = new Date();
+    var datestring = currDate.getMonth+"/"+currDate.getDay()+"/"+currDate.getFullYear();
+    client.set(datestring, req.body.name);
 });
 
 var port = process.env.PORT || 3000; //select your port or let it pull from your .env file
