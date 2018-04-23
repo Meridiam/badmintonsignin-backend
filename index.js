@@ -2,12 +2,12 @@ var express = require('express');
 var request = require('request');
 
 var mongoose = require('mongoose');
-mongoose.connect("mongodb://127.0.0.1:27017");
+var db_url = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017";
+mongoose.connect(db_url);
 
 var bodyParser = require('body-parser');
 var cors = require('cors');
 var socketIO = require('socket.io');
-var http = require('http');
 
 const url = "https://umsporttool.umd.edu/api/Rosters/get?clubID=Bdmtn";
 
@@ -83,11 +83,11 @@ app.post('/signin', function (req, res) {
 });
 
 var port = process.env.PORT || 3000; 
-/*var io = socketIO.listen(*/app.listen(port)/*)*/;
+var io = socketIO.listen(app.listen(port));
 console.log("listening on " + port + "!");
 
 /* IOSockets functionality*/
-/*io.sockets.on('connection', function (socket) {
+io.sockets.on('connection', function (socket) {
     console.log("new client connected.");
 
     socket.on('refresh', () => {
@@ -97,4 +97,4 @@ console.log("listening on " + port + "!");
     socket.on('disconnect', () => {
         console.log('a client disconnected.')
     });
-});*/
+});
