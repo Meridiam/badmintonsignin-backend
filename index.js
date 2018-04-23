@@ -18,6 +18,9 @@ app.use(bodyParser.json());
 app.get('/updateroster', function (req, res) {
     var names = [];
     request(url, function(error, response, body) {
+        if (error) {
+            res.send(error);
+        }
         if (!error && response.statusCode == 200) {
             const members = JSON.parse(body)["data"];
             for (var i = 0; i < members.length; i++) {
