@@ -10,18 +10,7 @@ const url = "https://umsporttool.umd.edu/api/Rosters/get?clubID=Bdmtn";
 
 var app = express();
 
-app.use(function (req, res, next) {
-
-    res.setHeader('Access-Control-Allow-Origin', '*');
-
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-
-    res.setHeader('Access-Control-Allow-Credentials', true);
-
-    next();
-});
+app.use(cors({credentials: true, origin: true}))
 
 app.use(bodyParser.json());
 
@@ -43,8 +32,8 @@ app.get('/updateroster', function (req, res) {
 app.get('/getroster', function (req, res) {
     client.get("roster", function(err, reply) {
         client.get((currDate.getMonth()+1)+"/"+currDate.getDate()+"/"+currDate.getFullYear(), function(err2, reply2) {
-            res.send(JSON.stringify({roster: reply,
-                                    registered: reply2}));
+            res.json({roster: reply,
+                                    registered: reply2});
         });
     });
 });
