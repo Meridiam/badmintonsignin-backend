@@ -90,8 +90,8 @@ console.log("listening on " + port + "!");
 io.sockets.on('connection', function (socket) {
     console.log("new client connected.");
 
-    socket.on('refresh', () => {
-        io.sockets.emit('refresh');
+    socket.on('refresh', name => {
+        io.sockets.emit('refresh', name);
     });
 
     socket.on('disconnect', () => {
