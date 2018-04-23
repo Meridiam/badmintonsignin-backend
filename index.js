@@ -67,7 +67,7 @@ app.get('/getdata', function (req, res) {
         });
 });
 
-app.post('/signin', function (req, res) {
+app.get('/signin', function (req, res) {
     Practice.findOneAndUpdate({'date': req.body.date},
         {$push: {'registered': req.body.name}},
         {upsert: true, new: true},
@@ -78,17 +78,22 @@ app.post('/signin', function (req, res) {
             res.json({registered: practice["registered"]});
         });
 });
-app.post('/signout', function (req, res) {
-    var registered;
+
+app.get('/signout', function (req, res) {
+    var reg;
     Practice.findOne({'date': req.body.date},
         function (err, practice) {
             if (err) {
                 console.log(err);
             }
-            registered = practice["registered"];
+            if (practice["registered"].filter(e => e != req.body.name) == null) {
+                reg = [];
+            } else {
+                reg = practice["registered"].filter(e => e != req.body.name);
+            }
         });
     Practice.findOneAndUpdate({'date': req.body.date},
-        {$set: {'registered': registered.filter(e => e != req.body.name)}},
+        {$set: {'registered': reg}},
         {upsert: true, new: true},
         function (err, practice) {
             if (err) {
@@ -108,6 +113,10 @@ io.sockets.on('connection', function (socket) {
 
     socket.on('refresh', name => {
         io.sockets.emit('refresh', name);
+    });
+
+    socket.on('revert', name => {
+        io.sockets.emit('revert', name);
     });
 
     socket.on('disconnect', () => {
