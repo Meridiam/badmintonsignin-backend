@@ -42,7 +42,10 @@ app.get('/updateroster', function (req, res) {
 
 app.get('/getroster', function (req, res) {
     client.get("roster", function(err, reply) {
-        res.send(JSON.stringify({roster: reply}));
+        client.get((currDate.getMonth()+1)+"/"+currDate.getDate()+"/"+currDate.getFullYear(), function(err2, reply2) {
+            res.send(JSON.stringify({roster: reply,
+                                    registered: reply2}));
+        });
     });
 });
 
