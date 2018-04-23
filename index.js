@@ -85,7 +85,7 @@ app.post('/signout', function (req, res) {
             if (err) {
                 console.log(err);
             }
-            registered = practice.registered;
+            registered = practice["registered"];
         });
     Practice.findOneAndUpdate({'date': req.body.date},
         {$set: {'registered': registered.filter(e => e != req.body.name)}},
@@ -94,6 +94,7 @@ app.post('/signout', function (req, res) {
             if (err) {
                 console.log(err);
             }
+            res.json({registered: practice["registered"]});
         });
 });
 
