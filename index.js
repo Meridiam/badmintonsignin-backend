@@ -25,50 +25,53 @@ app.get('/updateroster', function (req, res) {
                 var lastname = members[i]["lastName"].charAt(0).toUpperCase() + members[i]["lastName"].substring(1).toLowerCase();
                 names.push(firstname+" "+lastname);
             }
-            Roster.findByIdAndUpdate("permroster",
-            {$push: {'roster': names.join(",")}},
+            Roster.findOneAndUpdate({ "id": "permroster" },
+            {$set: {'roster': names}},
             {upsert: true, new: true},
             function (err, roster) {
                 if (err) {
                     console.log(err);
-                    return done(err);
                 }
+                res.json(roster);
             });
         }
     });
 });
 
-app.get('/getroster', function (req, res) {
+app.get('/getdata', function (req, res) {
     var roster;
     var registered;
-    Roster.findOne({ '_id': "permroster" },
+    var currDate = new Date();
+    Roster.findOne({ 'id': "permroster" },
         function (err, roster) {
             if (err) {
-                return done(err);
-            }
+                console.log(err);
+            } else {
             Practice.findOne({ 'date': (currDate.getMonth()+1)+"/"+currDate.getDate()+"/"+currDate.getFullYear()},
                 function (err, practice) {
                     if (practice == null) {
-                        res.json({roster: roster, registered: ""});
+                        res.json({roster: roster.roster, registered: ""});
                     } else {
-                        res.json({roster: roster, registered: practice.registered})
+                        res.json({roster: roster.roster, registered: practice.registered})
                     }
                 });
+            }
         });
 });
 
-app.post('/signin', function (req, res) {
+app.get('/signin', function (req, res) {
     var currDate = new Date();
     var datestring = (currDate.getMonth()+1)+"/"+currDate.getDate()+"/"+currDate.getFullYear();
     var registered;
-    client.get((currDate.getMonth()+1)+"/"+currDate.getDate()+"/"+currDate.getFullYear(), function(err, reply) {
-        if (reply === null) {
-            registered = "";
-        } else {
-            registered = reply;
-        }
-    })
-    client.set(datestring, req.body.name);
+    Practice.findOneAndUpdate({ 'date': (currDate.getMonth()+1)+"/"+currDate.getDate()+"/"+currDate.getFullYear()},
+        {$push: {'registered': "Akshit Garg"}},
+        {upsert: true, new: true},
+        function (err, practice) {
+            if (err) {
+                console.log(err);
+            }
+            res.json({registered: practice["registered"]});
+        });
 });
 
 var port = process.env.PORT || 3000; //select your port or let it pull from your .env file
