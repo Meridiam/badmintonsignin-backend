@@ -2,6 +2,7 @@ const express = require('express');
 const request = require('request');
 const redis = require('redis');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 var db = process.env.REDIS_URL || "//127.0.0.1:6379";
 const client = redis.createClient(db);
@@ -10,7 +11,7 @@ const url = "https://umsporttool.umd.edu/api/Rosters/get?clubID=Bdmtn";
 
 var app = express();
 
-app.use(cors({credentials: true, origin: true}))
+app.use(cors({credentials: true, origin: true}));
 
 app.use(bodyParser.json());
 
