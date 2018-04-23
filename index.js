@@ -14,8 +14,6 @@ const url = "https://umsporttool.umd.edu/api/Rosters/get?clubID=Bdmtn";
 var app = express();
 var server = http.Server(app);
 
-var io = socketIO(server);
-
 var Roster = require('./models/Roster');
 var Practice = require('./models/Practice');
 
@@ -85,13 +83,19 @@ app.post('/signin', function (req, res) {
         });
 });
 
-io.on('connection', function (socket) {
-    socket.emit('news', { hello: 'world' });
-    socket.on('event', function (data) {
-      console.log(data);
+var port = process.env.PORT || 3000; 
+var io = socketIO.listen(app.listen(port));
+console.log("listening on " + port + "!");
+
+/* IOSockets functionality*/
+io.sockets.on('connection', function (socket) {
+    console.log("new client connected.");
+
+    socket.on('refresh', () => {
+        io.sockets.emit('refresh');
+    });
+
+    socket.on('disconnect', () => {
+        console.log('a client disconnected.')
     });
 });
-
-var port = process.env.PORT || 3000; //select your port or let it pull from your .env file
-app.listen(port);
-console.log("listening on " + port + "!");
