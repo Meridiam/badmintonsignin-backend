@@ -40,7 +40,7 @@ app.get('/updateroster', function (req, res) {
 
 app.get('/getroster', function (req, res) {
     client.get("roster", function(err, reply) {
-        res.send(reply);
+        res.send(JSON.stringify({data: reply}));
     });
 });
 
