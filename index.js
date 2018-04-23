@@ -1,13 +1,21 @@
-const express = require('express');
-const request = require('request');
-const mongoose = require('mongoose');
-mongoose.connect(process.env.MONGODB_URI);
-const bodyParser = require('body-parser');
-const cors = require('cors');
+var express = require('express');
+var request = require('request');
+
+var mongoose = require('mongoose');
+mongoose.connect("mongodb://127.0.0.1:27017");
+
+var bodyParser = require('body-parser');
+var cors = require('cors');
+var socketIO = require('socket.io');
+var http = require('http');
 
 const url = "https://umsporttool.umd.edu/api/Rosters/get?clubID=Bdmtn";
 
 var app = express();
+var server = http.Server(app);
+
+var io = socketIO(server);
+
 var Roster = require('./models/Roster');
 var Practice = require('./models/Practice');
 
@@ -66,7 +74,7 @@ app.post('/signin', function (req, res) {
     var currDate = new Date();
     var datestring = (currDate.getMonth()+1)+"/"+currDate.getDate()+"/"+currDate.getFullYear();
     var registered;
-    Practice.findOneAndUpdate({ 'date': req.body.date},
+    Practice.findOneAndUpdate({'date': req.body.date},
         {$push: {'registered': req.body.name}},
         {upsert: true, new: true},
         function (err, practice) {
@@ -75,6 +83,13 @@ app.post('/signin', function (req, res) {
             }
             res.json({registered: practice["registered"]});
         });
+});
+
+io.on('connection', function (socket) {
+    socket.emit('news', { hello: 'world' });
+    socket.on('event', function (data) {
+      console.log(data);
+    });
 });
 
 var port = process.env.PORT || 3000; //select your port or let it pull from your .env file
