@@ -30,11 +30,12 @@ app.get('/updateroster', function (req, res) {
 });
 
 app.get('/getroster', function (req, res) {
+    var roster;
     client.get("roster", function(err, reply) {
-        client.get((currDate.getMonth()+1)+"/"+currDate.getDate()+"/"+currDate.getFullYear(), function(err2, reply2) {
-            res.json({roster: reply,
-                                    registered: reply2});
-        });
+        roster = reply;
+    });
+    client.get((currDate.getMonth()+1)+"/"+currDate.getDate()+"/"+currDate.getFullYear(), function(err, reply) {
+        res.json({roster: roster, registered: reply});
     });
 });
 
