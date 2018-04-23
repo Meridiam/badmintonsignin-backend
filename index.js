@@ -12,7 +12,6 @@ var http = require('http');
 const url = "https://umsporttool.umd.edu/api/Rosters/get?clubID=Bdmtn";
 
 var app = express();
-var server = http.Server(app);
 
 var Roster = require('./models/Roster');
 var Practice = require('./models/Practice');
