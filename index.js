@@ -48,7 +48,7 @@ app.get('/getroster', function (req, res) {
 
 app.post('/signin', function (req, res) {
     var currDate = new Date();
-    var datestring = currDate.getMonth+"/"+currDate.getDay()+"/"+currDate.getFullYear();
+    var datestring = currDate.getMonth()+"/"+currDate.getDay()+"/"+currDate.getFullYear();
     client.set(datestring, req.body.name);
 });
 
