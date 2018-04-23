@@ -8,6 +8,7 @@ const client = redis.createClient(db);
 const url = "https://umsporttool.umd.edu/api/Rosters/get?clubID=Bdmtn";
 
 var app = express();
+app.use(allowCrossDomain);
 
 app.get('/updateroster', function (req, res) {
     var names = [];
