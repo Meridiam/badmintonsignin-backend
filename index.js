@@ -86,9 +86,7 @@ app.post('/signout', function (req, res) {
             if (err) {
                 console.log(err);
             }
-            if (practice["registered"].filter(e => e != req.body.name) != null) {
                 reg = practice["registered"].filter(e => e != req.body.name);
-            } 
         });
     Practice.findOneAndUpdate({'date': req.body.date},
         {$set: {'registered': reg}},
