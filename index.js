@@ -84,7 +84,7 @@ app.post('/signin', function (req, res) {
                     res.json({registered: practice["registered"]});
                 });
             }
-            if(practice["registered"].indexOf(req.body.name) == -1) {
+            else if(practice["registered"].indexOf(req.body.name) == -1) {
                 Practice.findOneAndUpdate({'date': req.body.date},
                     {$push: {'registered': req.body.name}},
                     {upsert: true, new: true},
