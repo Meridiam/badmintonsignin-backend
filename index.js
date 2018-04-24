@@ -55,12 +55,12 @@ app.post('/getdata', function (req, res) {
             if (err) {
                 console.log(err);
             } else {
-            Practice.findOne({ 'date': req.body.date},
+            Practice.findOne({'date': req.body.date},
                 function (err, practice) {
                     if (practice == null) {
-                        res.json({roster: roster.roster, registered: ""});
+                        res.json({roster: roster["roster"], registered: ""});
                     } else {
-                        res.json({roster: roster.roster, registered: practice.registered})
+                        res.json({roster: roster["roster"], registered: practice.registered})
                     }
                 });
             }
@@ -112,6 +112,7 @@ console.log("listening on " + port + "!");
 
 /* IOSockets functionality*/
 io.sockets.on('connection', function (socket) {
+    socket.removeAllListeners();
     console.log("new client connected.");
 
     socket.on('refresh', name => {
