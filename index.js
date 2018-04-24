@@ -83,16 +83,6 @@ app.post('/signin', function (req, res) {
                     }
                     res.json({registered: practice["registered"]});
                 });
-            } else {
-                Practice.findOneAndUpdate({'date': req.body.date},
-                {$push: {'registered': req.body.name}},
-                {upsert: true, new: true},
-                function (err, practice) {
-                    if (err) {
-                        console.log(err);
-                    }
-                    res.json({registered: practice["registered"]});
-                });
             }
         });
 });
