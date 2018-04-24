@@ -75,7 +75,7 @@ app.post('/signin', function (req, res) {
             }
             if(!practice["registered"].includes(req.body.name)) {
                 Practice.findOneAndUpdate({'date': req.body.date},
-                    {$push: {'registered': req.body.name}},
+                    {$addToSet: {'registered': req.body.name}},
                     {upsert: true, new: true},
                     function (err, practice) {
                         if (err) {
