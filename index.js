@@ -123,11 +123,13 @@ io.sockets.on('connection', function (socket) {
     console.log("new client connected.");
 
     socket.on('refresh', name => {
+        console.log("REFRESHING")
         io.sockets.emit('refresh', name);
         socket.disconnect();
     });
 
     socket.on('revert', name => {
+        console.log("REVERTING")
         io.sockets.emit('revert', name);
         socket.disconnect();
     });
