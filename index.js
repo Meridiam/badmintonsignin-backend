@@ -68,14 +68,22 @@ app.post('/getdata', function (req, res) {
 });
 
 app.post('/signin', function (req, res) {
-    Practice.findOneAndUpdate({'date': req.body.date},
-        {$push: {'registered': req.body.name}},
-        {upsert: true, new: true},
+    Practice.findOne({'date': req.body.date},
         function (err, practice) {
             if (err) {
                 console.log(err);
             }
-            res.json({registered: practice["registered"]});
+            if(practice["registered"].indexOf(req.body.name) == -1) {
+                Practice.findOneAndUpdate({'date': req.body.date},
+                {$push: {'registered': req.body.name}},
+                {upsert: true, new: true},
+                function (err, practice) {
+                    if (err) {
+                        console.log(err);
+                    }
+                    res.json({registered: practice["registered"]});
+                });
+            }
         });
 });
 
