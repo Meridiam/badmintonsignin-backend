@@ -31,7 +31,7 @@ app.get('/updateroster', function (req, res) {
             for (var i = 0; i < members.length; i++) {
                 var firstname = members[i]["firstName"].charAt(0).toUpperCase() + members[i]["firstName"].substring(1).toLowerCase();
                 var lastname = members[i]["lastName"].charAt(0).toUpperCase() + members[i]["lastName"].substring(1).toLowerCase();
-                names.push(firstname+" "+lastname);
+                if (members[i]["waiver"] != false) {names.push(firstname+" "+lastname);}
             }
             Roster.findOneAndUpdate({ "id": "permroster" },
             {$set: {'roster': names}},
