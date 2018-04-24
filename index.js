@@ -73,7 +73,7 @@ app.post('/signin', function (req, res) {
             if (err) {
                 console.log(err);
             }
-            if(practice["registered"].indexOf(req.body.name) == -1) {
+            if(practice === null || practice["registered"] === null) {
                 Practice.findOneAndUpdate({'date': req.body.date},
                 {$push: {'registered': req.body.name}},
                 {upsert: true, new: true},
@@ -81,9 +81,19 @@ app.post('/signin', function (req, res) {
                     if (err) {
                         console.log(err);
                     }
-                    console.log("DAFJSKADFJSAKFJASKFJSADKFJSAKDFJSKFJSAKFDJFJD");
                     res.json({registered: practice["registered"]});
                 });
+            }
+            if(practice["registered"].indexOf(req.body.name) == -1) {
+                Practice.findOneAndUpdate({'date': req.body.date},
+                    {$push: {'registered': req.body.name}},
+                    {upsert: true, new: true},
+                    function (err, practice) {
+                        if (err) {
+                            console.log(err);
+                        }
+                        res.json({registered: practice["registered"]});
+                    });
             }
         });
 });
