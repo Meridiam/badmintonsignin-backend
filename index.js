@@ -86,16 +86,18 @@ app.post('/signout', function (req, res) {
             if (err) {
                 console.log(err);
             }
+            if (practice["registered"].filter(e => e != req.body.name) != null) {
                 reg = practice["registered"].filter(e => e != req.body.name);
-        });
-    Practice.findOneAndUpdate({'date': req.body.date},
-        {$set: {'registered': reg}},
-        {upsert: true, new: true},
-        function (err, practice) {
-            if (err) {
-                console.log(err);
             }
-            res.json({registered: practice["registered"]});
+            Practice.findOneAndUpdate({'date': req.body.date},
+                {$set: {'registered': reg}},
+                {upsert: true, new: true},
+                function (err, practice) {
+                    if (err) {
+                        console.log(err);
+                    }
+                    res.json({registered: practice["registered"]});
+                });
         });
 });
 
