@@ -73,7 +73,7 @@ app.post('/signin', function (req, res) {
             if (err) {
                 console.log(err);
             }
-            if(practice === null || practice["registered"].indexOf(req.body.name) == -1) {
+            if(practice["registered"].indexOf(req.body.name) == -1) {
                 Practice.findOneAndUpdate({'date': req.body.date},
                     {$push: {'registered': req.body.name}},
                     {upsert: true, new: true},
