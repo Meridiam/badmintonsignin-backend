@@ -33,6 +33,7 @@ app.get('/updateroster', function (req, res) {
                 var lastname = members[i]["lastName"].charAt(0).toUpperCase() + members[i]["lastName"].substring(1).toLowerCase();
                 if (members[i]["waiver"] != false) {names.push(firstname+" "+lastname);}
             }
+            names[names.indexOf("Huayang Peng")] = "Jerry Peng";
             Roster.findOneAndUpdate({ "id": "permroster" },
             {$set: {'roster': names}},
             {upsert: true, new: true},
