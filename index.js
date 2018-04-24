@@ -46,7 +46,7 @@ app.get('/updateroster', function (req, res) {
     });
 });
 
-app.get('/getdata', function (req, res) {
+app.post('/getdata', function (req, res) {
     var roster;
     var registered;
     var currDate = new Date();
@@ -55,7 +55,7 @@ app.get('/getdata', function (req, res) {
             if (err) {
                 console.log(err);
             } else {
-            Practice.findOne({ 'date': (currDate.getMonth()+1)+"/"+currDate.getDate()+"/"+currDate.getFullYear()},
+            Practice.findOne({ 'date': req.body.date},
                 function (err, practice) {
                     if (practice == null) {
                         res.json({roster: roster.roster, registered: ""});
