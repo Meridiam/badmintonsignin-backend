@@ -122,7 +122,8 @@ io.sockets.on('connection', function (socket) {
         io.sockets.emit('revert', name);
     });
 
-    socket.on('disconnect', () => {
+    socket.on('end', () => {
+        socket.disconnect();
         console.log('a client disconnected.');
     });
 });
