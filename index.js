@@ -81,6 +81,7 @@ app.post('/signin', function (req, res) {
                         if (err) {
                             console.log(err);
                         }
+                        console.log(req.body.date);
                         console.log(req.body.name);
                         res.json({registered: practice["registered"]});
                     });
