@@ -94,6 +94,8 @@ app.post('/signin', function (req, res) {
                         }
                         res.json({registered: practice["registered"]});
                     });
+            } else {
+                res.json({registered: practice["registered"]});
             }
         });
 });
