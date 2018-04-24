@@ -116,10 +116,12 @@ io.sockets.on('connection', function (socket) {
 
     socket.on('refresh', name => {
         io.sockets.emit('refresh', name);
+        socket.disconnect();
     });
 
     socket.on('revert', name => {
         io.sockets.emit('revert', name);
+        socket.disconnect();
     });
 
     socket.on('end', () => {
