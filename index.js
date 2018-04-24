@@ -112,7 +112,7 @@ console.log("listening on " + port + "!");
 
 /* IOSockets functionality*/
 io.sockets.on('connection', function (socket) {
-    socket.removeAllListeners();
+    socket.disconnect(true);
     console.log("new client connected.");
 
     socket.on('refresh', name => {
