@@ -67,7 +67,7 @@ app.get('/getdata', function (req, res) {
         });
 });
 
-app.get('/signin', function (req, res) {
+app.post('/signin', function (req, res) {
     Practice.findOneAndUpdate({'date': req.body.date},
         {$push: {'registered': req.body.name}},
         {upsert: true, new: true},
@@ -79,7 +79,7 @@ app.get('/signin', function (req, res) {
         });
 });
 
-app.get('/signout', function (req, res) {
+app.post('/signout', function (req, res) {
     var reg;
     Practice.findOne({'date': req.body.date},
         function (err, practice) {
