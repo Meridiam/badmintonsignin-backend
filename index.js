@@ -130,6 +130,18 @@ app.get('/opensignin', function (req, res) {
         });
 });
 
+app.get('/opensignout', function (req, res) {
+    OpenPractice.findOneAndUpdate({'date': '4/24/2018'},
+        {$dec: {'attendance': 1}},
+        {upsert: true, new: true},
+        function (err, practice) {
+            if (err) {
+                console.log(err);
+            }
+            res.json({attendance: practice["attendance"]});
+        });
+});
+
 var port = process.env.PORT || 3000; 
 var io = socketIO.listen(app.listen(port));
 console.log("listening on " + port + "!");
