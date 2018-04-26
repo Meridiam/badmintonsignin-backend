@@ -15,6 +15,7 @@ var app = express();
 
 var Roster = require('./models/Roster');
 var Practice = require('./models/Practice');
+var OpenPractice = require('./models/OpenPractice');
 
 app.use(cors({credentials: true, origin: true}));
 
@@ -111,6 +112,24 @@ app.post('/signout', function (req, res) {
         });
 });
 
+app.get('/getstats', function (req, res) {
+    Practice.find({}, function (err, practiceArr) {
+        res.json({practices: practiceArr});
+    });
+});
+
+app.get('/opensignin', function (req, res) {
+    OpenPractice({'date': '4/24/2018'},
+        {$inc: {'attendance': 1}},
+        {upsert: true, new: true},
+        function (err, practice) {
+            if (err) {
+                console.log(err);
+            }
+            res.json({attendance: practice["attendance"]});
+        });
+});
+
 var port = process.env.PORT || 3000; 
 var io = socketIO.listen(app.listen(port));
 console.log("listening on " + port + "!");
@@ -120,13 +139,13 @@ io.sockets.on('connection', function (socket) {
     console.log("new client connected.");
 
     socket.on('refresh', name => {
-        console.log("REFRESHING")
+        console.log("REFRESHING");
         io.sockets.emit('refresh', name);
         socket.disconnect();
     });
 
     socket.on('revert', name => {
-        console.log("REVERTING")
+        console.log("REVERTING");
         io.sockets.emit('revert', name);
         socket.disconnect();
     });
