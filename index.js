@@ -132,7 +132,7 @@ app.get('/opensignin', function (req, res) {
 
 app.get('/opensignout', function (req, res) {
     OpenPractice.findOneAndUpdate({'date': '4/24/2018'},
-        {$dec: {'attendance': 1}},
+        {$inc: {'attendance': -1}},
         {upsert: true, new: true},
         function (err, practice) {
             if (err) {
