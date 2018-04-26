@@ -119,7 +119,7 @@ app.get('/getstats', function (req, res) {
 });
 
 app.get('/opensignin', function (req, res) {
-    OpenPractice({'date': '4/24/2018'},
+    OpenPractice.findOneAndUpdate({'date': '4/24/2018'},
         {$inc: {'attendance': 1}},
         {upsert: true, new: true},
         function (err, practice) {
