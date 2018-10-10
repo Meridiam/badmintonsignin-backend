@@ -116,7 +116,7 @@ app.get('/getstats', function (req, res) {
     Practice.find({}, function (err, practiceArr) {
         res.json({practices: practiceArr.sort((a, b) => {
                 return new Date(a["date"]) - new Date(b["date"]);
-            }).slice(0, 6)});
+            }).slice(-6)});
     });
 });
 
