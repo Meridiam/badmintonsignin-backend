@@ -108,6 +108,9 @@ app.post('/signout', function (req, res) {
                         console.log(err);
                     }
                     res.json({registered: practice["registered"]});
+                    if (practice["registered"].length == 0) {
+                        Practice.remove({'date': req.body.date})
+                    }
                 });
         });
 });
