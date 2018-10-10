@@ -114,7 +114,9 @@ app.post('/signout', function (req, res) {
 
 app.get('/getstats', function (req, res) {
     Practice.find({}, function (err, practiceArr) {
-        res.json({practices: practiceArr.slice(6)});
+        res.json({practices: practiceArr.sort((a, b) => {
+                return new Date(a["date"]) - new Date(b["date"]);
+            }).slice(0, 6)});
     });
 });
 
