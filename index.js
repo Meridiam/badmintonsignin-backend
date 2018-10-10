@@ -103,12 +103,12 @@ app.post('/signout', function (req, res) {
             Practice.findOneAndUpdate({'date': req.body.date},
                 {$set: {'registered': reg}},
                 {upsert: true, new: true},
-                function (err, practice) {
+                function (err, practice2) {
                     if (err) {
                         console.log(err);
                     }
-                    res.json({registered: practice["registered"]});
-                    if (practice["registered"].length == 0) {
+                    res.json({registered: practice2["registered"]});
+                    if (practice2["registered"].length == 0) {
                         Practice.remove({'date': req.body.date})
                     }
                 });
