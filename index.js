@@ -109,7 +109,8 @@ app.post('/signout', function (req, res) {
                     }
                     res.json({registered: practice2["registered"]});
                     if (practice2["registered"].length == 0) {
-                        Practice.remove({'date': req.body.date})
+                        Practice.remove({'date': req.body.date});
+                        console.log("removed practice!");
                     }
                 });
         });
